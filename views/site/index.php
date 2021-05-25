@@ -47,6 +47,7 @@
             <?php if ($isDirector) : ?>
                 <select class="input__inLine" name="responsible_filter">
                     <option hidden value="">Ответственное лицо</option>
+                        <option value="<?=$_SESSION['user'] ?>">Мои задачи</option>
                     <?php foreach ($employersList as $responsible) : ?>
                         <option value="<?=$responsible['id'] ?>"><?=$responsible['first_name'] . " " . $responsible['second_name']  ?></option>
                     <?php endforeach; ?>
@@ -87,6 +88,7 @@
                 <?php if ($isDirector) : ?>
                     <select class="input__inLine" name="responsible" required>
                         <option hidden value="">Ответственное лицо</option>
+                        <option value="<?=$_SESSION['user'] ?>">Это моя задача</option>
                         <?php foreach ($employersList as $responsible) : ?>
                             <option value="<?=$responsible['id'] ?>"><?=$responsible['first_name'] . " " . $responsible['second_name']  ?></option>
                         <?php endforeach; ?>
@@ -126,6 +128,7 @@
 
                 <select class="input__inLine" name="responsible" required <?= (!$isDirector) ? 'disabled' : '' ?>>
                         <option hidden value="">Ответственное лицо</option>
+                        <option value="<?=$_SESSION['user'] ?>">Это моя задача</option>
                     <?php foreach ($employersList as $responsible) : ?>
                         <?= '123' ?>
                         <option name="responsible" value="<?=$responsible['id'] ?>"><?=$responsible['first_name'] . " " . $responsible['second_name']  ?></option>

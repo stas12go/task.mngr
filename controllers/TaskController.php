@@ -15,7 +15,7 @@ class TaskController
 			$title = $_POST['title'];
 			$description = $_POST['description'];
 			$endDate = $_POST['end_date'];
-			$createDate = date('Y-m-d');
+			$createDate = date('Y-m-d H:i:s');
 			$priority = $_POST['priority'];
 			$status = $_POST['status'];
 			$creator = User::checkLogged();
@@ -65,7 +65,7 @@ class TaskController
 			$creator = $userId;
 			$responsible = isset($_POST['responsible']) ? $_POST['responsible'] : User::checkLogged();
 	        $status = $_POST['status'];
-	        $updateDate = date('Y-m-d', time());
+	        $updateDate = date('Y-m-d H:i:s');
 
 	        // И обновлеяем задачу
 	        Task::updateTaskById(

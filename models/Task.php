@@ -18,25 +18,25 @@ class Task
         $db = Db::getConnection();
      
         // Пишем основу запроса
-        $sqlRequest = 'SELECT id, title, end_date, status, priority FROM `tasks`';
+        $sqlRequest = 'SELECT id, title, end_date, status, priority FROM `tasks` ';
 
         // Выбираем способ фильтрации и дописываем запрос
         switch ($date_filter) {
 
             // Только задачи на сегодня
             case 'today':
-                $sqlRequest .= 'WHERE DATE(end_date) = DATE(CURRENT_DATE())';
+                $sqlRequest .= 'WHERE DATE(end_date) = DATE(CURRENT_DATE()) ';
                 break;
 
             // Задачи на неделю вперёд
             case 'week':
-                $sqlRequest .= 'WHERE DATE(end_date) BETWEEN DATE(CURRENT_DATE()) AND DATE(CURRENT_DATE() + INTERVAL 1 WEEK)';
+                $sqlRequest .= 'WHERE DATE(end_date) BETWEEN DATE(CURRENT_DATE()) AND DATE(CURRENT_DATE() + INTERVAL 1 WEEK) ';
                 break;
 
             // Все задачи
             default:
                 // Дефолт сработает в случае "дефолтного" 'all' и ничего по сути не добавит к запросу
-                $sqlRequest .= 'WHERE id > 0';
+                $sqlRequest .= 'WHERE id > 0 ';
                 break;
         }
 
@@ -49,13 +49,14 @@ class Task
                 // Юзер не выбрал сотрудника, значит, отображаем задачи всех сотр-ков
                 case 0:
                     // Разворачиваем логику в другую сторону. Здесь "дефолтный" 0 так же ничего не добавит к запросу и сразу выполнит его
+                    $sqlRequest .= 'ORDER BY IF(update_date > create_date, update_date, create_date) DESC';
                     $result = $db->query($sqlRequest);
                     break;
                 
                 /* Если всё же какой-то сотр-к был выбран, то дописываем запрос под конкретного сотр-ка,
                 вставляем айди сотр-ка и выполняем запрос */
                 default:
-                    $sqlRequest .= ' AND responsible = :responsible';
+                    $sqlRequest .= 'AND responsible = :responsible ORDER BY IF(update_date > create_date, update_date, create_date) DESC';
                     $result = $db->prepare($sqlRequest);
                     $result->bindParam(':responsible', $responsible_filter, PDO::PARAM_INT);
                     $result->execute();
@@ -64,7 +65,7 @@ class Task
 
             // Если - сотр-к, то отобразим только задачи, которые поставлены перед ним
         } else {
-            $result = $db->prepare($sqlRequest . ' AND responsible = :userId');
+            $result = $db->prepare($sqlRequest . ' AND responsible = :userId ORDER BY IF(update_date > create_date, update_date, create_date) DESC');
             $result->bindParam(':userId', $userId, PDO::PARAM_INT);
             $result->execute();
         }

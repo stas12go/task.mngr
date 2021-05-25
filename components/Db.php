@@ -12,12 +12,9 @@ class Db
      */
     public static function getConnection()
     {
-        // Получаем параметры подключения из файла
-        $paramsPath = ROOT . '/config/db_params.php';
-        $params = include($paramsPath);
 
         // Устанавливаем соединение
-        if ($_SERVER['SERVER_NAME'] == "stas12go-task-mngr.herokuapp.com") {
+        if ($_SERVER['SERVER_NAME'] === "stas12go-task-mngr.herokuapp.com") {
             //Get Heroku ClearDB connection information
             $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
             $cleardb_server = $cleardb_url["host"];
@@ -29,6 +26,9 @@ class Db
             // Connect to DB
             $db = new PDO("mysql:host={$cleardb_server};dbname={$cleardb_db}", $cleardb_username, $cleardb_password);
         } else {
+            // Получаем параметры подключения из файла
+            $paramsPath = ROOT . '/config/db_params.php';
+            $params = include($paramsPath);
             $db = new PDO("mysql:host={$params['host']};dbname={$params['dbname']}", $params['user'], $params['password']);
         }
 
