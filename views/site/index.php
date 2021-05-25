@@ -1,5 +1,5 @@
 <?php include ROOT . '/views/layouts/header.php'; ?>
-<?php var_dump($_SERVER); ?>
+<?php echo "server:<br>" var_dump($_SERVER); ?>
 <div class="container container_shadow">
 	<div class="block">
 		<div class="card card_content">
