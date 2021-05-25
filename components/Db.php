@@ -27,7 +27,7 @@ class Db
             $active_group = 'default';
             $query_builder = TRUE;
             // Connect to DB
-            $db = new PDO("mysql:host={$cleardb_server};dbname={$cleardb_username}", $cleardb_password, $cleardb_db);
+            $db = new PDO("mysql:host={$cleardb_server};dbname={$cleardb_db}", $cleardb_username, $cleardb_password);
         } else {
             $db = new PDO("mysql:host={$params['host']};dbname={$params['dbname']}", $params['user'], $params['password']);
         }
